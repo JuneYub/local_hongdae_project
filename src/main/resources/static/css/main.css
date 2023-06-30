@@ -1,0 +1,34 @@
+@font-face {
+    font-family: 'SUITE-Regular';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2304-2@1.0/SUITE-Regular.woff2') format('woff2');
+    font-weight: 400;
+    font-style: normal;
+}
+
+@media screen and (max-width: 900px) {
+
+    .top_01 {
+        height: 19.44vw;
+        text-align: center;
+        position: relative;
+    }
+
+    #logo_img_link img {
+        width: 35vw;
+        height: auto;
+        padding-top: 6vw;
+    }
+
+    .gnb_all {
+        width: 13.33vw;
+        height: 13.33vw;
+        margin: 0;
+        position: absolute;
+        top: 3.33vw;
+
+        left: 2.22vw;
+        background: url("../img/ico_gnbAll_m.png") no-repeat;
+        background-size: 13.33vw;
+    }
+
+}

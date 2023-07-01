@@ -52,6 +52,7 @@ a {
     }
 
     .nav_wrap {
+        background-color: white;
         position: absolute;
         top: 16.66vw;
         bottom: 16.66vw;
@@ -117,4 +118,27 @@ a {
         margin: 0 2.77vw;
     }
 
+    .swiper-img {
+        width: 100%;
+        height: 100vw;
+        background: url(../img/main_intro_img.jpg);
+        background-size: 100% auto;
+        background-repeat: no-repeat;
+        background-position: center;
+    }
+
+    .intro-banner {
+        background-color: #ededed;
+        width: 100%;
+        height: 40vw;
+        margin-top: 10vw;
+        display: flex;
+        align-items: center;
+    }
+
+    .intro-banner p {
+        margin-left: 3vw;
+        font-size: 6vw;
+        color: #8b8b8b;
+    }
 }

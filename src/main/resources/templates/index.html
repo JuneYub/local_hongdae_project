@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8">
+    <title>Local Hongdae</title>
+    <link rel="stylesheet" type="text/css" href="/css/main.css">
+
+</head>
+<body>
+<script>
+    window.onload = function () {
+
+    }
+
+    function openNav() {
+        let nav = document.getElementsByClassName('nav_wrap');
+        if(nav[0].style.display === 'none') {
+            nav[0].style.display = 'block';
+        }
+        else {
+            nav[0].style.display = 'none';
+        }
+    }
+
+</script>
+
+<div id="wrap">
+    <header class="top">
+        <section class="top_01">
+            <a href="#" class="btn_all gnb_all" onclick="openNav()"></a>
+
+            <a id="logo_img_link" href="/">
+                <img src="/img/localhongdae_logo.png" alt="local hongdae">
+            </a>
+        </section>
+
+        <div class="nav_wrap" style="display: none">
+            <section class="top_02">
+            <span class="login" id="spanLogin">
+                <a href="#" onclick="">LOGIN</a>
+            </span>
+            </section>
+
+            <nav class="main m_open">
+                <h2><a>Food</a></h2>
+                <h2><a>Cafe</a></h2>
+                <h2><a>Bar</a></h2>
+            </nav>
+
+            <section class="social_btns">
+                <a class="btn_insta"></a>
+            </section>
+        </div>
+    </header>
+</div>
+
+<section class="contents">
+    <!-- Main Contents -->
+    <div></div>
+
+</section>
+</body>
+</html>

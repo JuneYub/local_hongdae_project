@@ -1,7 +1,23 @@
+server:
+  port: 8081
+
 spring:
   devtools:
     restart:
       enabled: true
+  spring:
+    thymeleaf:
+      enabled: true
+      dialects: nz.net.ultraq.thymeleaf.LayoutDialect
+      prefix: classpath:/templates/
+      suffix: .html
+      cache: false
+      mode: HTML
+      encoding: UTF-8
+      servlet:
+        content-type: text/html;charset=UTF-8
+      view-names: error
+      check-template-location: true
+      template-resolver-order: 0
 
-server:
-  port: 8081
+

@@ -1,11 +1,36 @@
-<!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Local Hongdae</title>
-</head>
-<body>
+<html xmlns:th="http://www.thymeleaf.org" lang="en"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{/layout/default_layout}">
 
+<body>
+    <section class="contents" layout:fragment="content">
+        <div class="list-wrap">
+            <div class="list-intro-img">
+                <div class="resturant-list-logo">
+                    <p class="logo-title">Restaurant</p>
+                </div>
+            </div>
+
+            <div class="list-body-wrap">
+                <ul>
+                    <li>
+                        <div class="item-card">
+                            <div class="item-img">
+                                <span>
+                                <img src="../img/restaurant/1.jpg">
+                                </span>
+                            </div>
+                            <div class="item-tit"></div>
+                        </div>
+                    </li>
+
+                </ul>
+
+            </div>
+        </div>
+
+        </div>
+    </section>
 </body>
+
 </html>

@@ -1,7 +1,8 @@
 <html lang="en"
       xmlns:th="http://www.thymeleaf.org"
       >
-<th:block th:fragment="header">
+<th:block th:fragment="header"></th:block>
+<th:block th:with="ctxPath=${#httpServletRequest.contextPath}"></th:block>
 <header>
     <script>
         window.onload = function () {
@@ -37,7 +38,7 @@
                 </section>
 
                 <nav class="main m_open">
-                    <h2><a>Restaurant</a></h2>
+                    <h2><a th:href="@{{ctxPath}/restaurant/list (ctxPath=${ctxPath})}">Restaurant</a></h2>
                     <h2><a>Cafe</a></h2>
                     <h2><a>Bar</a></h2>
                 </nav>

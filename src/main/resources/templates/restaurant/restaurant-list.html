@@ -2,6 +2,8 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{/layout/default_layout}">
 
+<th:block th:with="ctxPath=${#httpServletRequest.contextPath}"></th:block>
+
 <body>
     <section class="contents" layout:fragment="content">
         <div class="list-wrap">
@@ -14,14 +16,12 @@
             <div class="list-body-wrap">
                 <ul>
                     <li>
-                        <div class="item-card">
-                            <div class="item-img">
-                                <span>
-                                <img src="../img/restaurant/1.jpg">
-                                </span>
+                        <a th:href="@{{ctxPath}/restaurant/detail (ctxPath=${ctxPath})}" >
+                            <div class="item-card" style="background: url('../img/restaurant/1.jpg');
+                            background-size: cover; background-repeat: no-repeat; background-position: center;">
+                                <p>baeknyeon dodamdolsotbap </p>
                             </div>
-                            <div class="item-tit"></div>
-                        </div>
+                        </a>
                     </li>
 
                 </ul>

@@ -8,9 +8,16 @@ import org.springframework.web.servlet.ModelAndView;
 public class RestaurantController {
 
     @GetMapping("/restaurant/list")
-    public ModelAndView getList() {
+    public ModelAndView getResturantList() {
         ModelAndView model = new ModelAndView();
         model.setViewName("restaurant/restaurant-list");
+        return model;
+    }
+
+    @GetMapping("/restaurant/detail")
+    public ModelAndView getResturantDetail() {
+        ModelAndView model = new ModelAndView();
+        model.setViewName("restaurant/restaurant-detail");
         return model;
     }
 }

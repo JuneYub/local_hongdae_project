@@ -7,19 +7,49 @@
 <body>
     <section class="contents" layout:fragment="content">
         <div class="list-wrap">
-            <div class="list-intro-img">
-                <div class="resturant-list-logo">
-                    <p class="logo-title">Restaurant</p>
+            <div id="map" style="width:100%;height:80vw;"></div>
+            <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=26966ba6b4868e85a7fc9760936d8e28"></script>
+            <script>
+                var container = document.getElementById('map');
+                var options = {
+                    center: new kakao.maps.LatLng(37.56618444304983, 126.97836380791748),
+                    level: 3
+                };
+
+                var map = new kakao.maps.Map(container, options);
+            </script>
+            <form>
+                <div class="select-wrapper">
+                    <div class="line-center">
+                        <select class="custom-select-addr">
+                            <option value="none">광역시/도</option>
+                            <option value="서울시">서울시</option>
+                        </select>
+                    </div>
+
+                    <div class="line-center">
+                        <select class="custom-select-addr">
+                            <option value="none">시/군/구</option>
+                            <option value="test">test</option>
+                        </select>
+                    </div>
                 </div>
-            </div>
+                <div class="line-center">
+                <button class="btn-search-place">검색</button>
+                </div>
+            </form>
 
             <div class="list-body-wrap">
+
+
+
                 <ul>
                     <li>
                         <a th:href="@{{ctxPath}/restaurant/detail (ctxPath=${ctxPath})}" >
                             <div class="item-card" style="background: url('../img/restaurant/1.jpg');
                             background-size: cover; background-repeat: no-repeat; background-position: center;">
-                                <p>baeknyeon dodamdolsotbap </p>
+                                <p>백연돌담솥밥</p>
+                                <p>방문 횟수 : 3회</p>
                             </div>
                         </a>
                     </li>

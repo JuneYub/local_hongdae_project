@@ -13,4 +13,11 @@ public class AdminController {
         model.setViewName("admin/admin-login");
         return model;
     }
+
+    @GetMapping("admin/dashboard")
+    public ModelAndView getDashboard() {
+        ModelAndView model = new ModelAndView();
+        model.setViewName("admin/dashboard");
+        return model;
+    }
 }

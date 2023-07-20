@@ -3,8 +3,47 @@
       xmlns:th="http://www.thymeleaf.org"
 >
 <header>
-    <div id="wrap">
+    <script>
+        $(document).ready(function() {
+            $(".menu_depth_1_accordiaon").click(function() {
 
+                $(this).toggleClass("menu_accordiaon_active");
+                $(this).next(".menu_cont").slideToggle();
+
+                $(".menu_depth_1_accordiaon").not(this).removeClass("menu_accordiaon_active");
+                $(".menu_cont").not($(this).next(".menu_cont")).slideUp();
+            })
+        });
+    </script>
+
+    <div id="wrap">
+        <nav id="nav_content">
+            <div class="title_dashboard">
+                <h1>관리자 페이지</h1>
+            </div>
+
+            <ul class="menu_accordiaon">
+                <li>
+                    <div class="menu_depth_1_accordiaon" data-toggle-id="1">
+                        음식점 관리
+                    </div>
+                    <ul class="menu_cont" style="display: none" data-toggle-id="1">
+                        <li>
+                            <a href="">음식점 입력</a>
+                        </li>
+                    </ul>
+
+                    <div class="menu_depth_1_accordiaon" data-toggle-id="2">
+                        다른 항목 2
+                    </div>
+                    <ul class="menu_cont" style="display: none" data-toggle-id="2">
+                        <li>
+                            <a href="">다른 항목 2 세부항목</a>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </nav>
     </div>
 
 </header>

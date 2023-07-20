@@ -38,6 +38,8 @@ html, body {
 
 header {
     height: 100%;
+    position: absolute;
+    z-index: 2;
 }
 
 .content-wrapper {
@@ -155,4 +157,37 @@ header {
 .menu_accordiaon > li > ul > li > a {
     color: white;
 }
+
+.sidenav-content {
+    background-color: white;
+    margin-left: 320px;
+    height: 100%;
+    padding: 24px;
+}
+
+.input-place-content {
+    margin: 0 auto;
+    width: 1300px;
+    height: 1120px;
+    border: 1px solid #e5e5e5;
+    box-shadow: #e5e5e5 2px 2px 14px;
+    padding: 24px;
+}
+
+.content-title {
+    font-size: 25px;
+    font-weight: bold;
+}
+
+.list-radio {
+    font-size: 20px;
+    margin-top: 50px;
+}
+
+.add_place {
+    display: none;
+    width: 100%;
+    height: auto;
+}
+
 

@@ -6,7 +6,44 @@
     <meta charset="UTF-8">
 </head>
 <body>
-    <section class="contents" layout:fragment="content">
+<th:block layout:fragment="content">
+    <script>
+        $(document).ready(function() {
+            $("input[value='firstRegisterPage']").prop('checked', true);
+            $("#firstRegisterPage").css('display', 'block');
+        })
+
+        function showPage(radio) {
+            var pages = document.getElementsByClassName("add_place");
+            for(var i = 0; i < pages.length; i++) {
+                pages[i].style.display = "none";
+            }
+
+            var pageId = radio.value;
+            var pageToShow = document.getElementById(pageId);
+            pageToShow.style.display = "block";
+        }
+
+    </script>
+    <section class="sidenav-content">
+        <div class="input-place-content">
+            <div class="content-title">음식점 등록</div>
+            <div class="list-radio">
+                <input type="radio" id="firstRegister" name="selectOpt" value="firstRegisterPage" onclick="showPage(this)">
+                <label for="firstRegister">처음 등록</label>
+                <input type="radio" id="addVisit" name="selectOpt" value="addVisitPage" onclick="showPage(this)">
+                <label for="addVisit">방문 기록만 추가</label>
+            </div>
+
+            <div class="add_place" id="firstRegisterPage">
+
+            </div>
+
+            <div class="add_place" id="addVisitPage">
+
+            </div>
+        </div>
     </section>
+</th:block>
 </body>
 </html>

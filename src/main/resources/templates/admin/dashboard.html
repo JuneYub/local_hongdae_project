@@ -24,6 +24,16 @@
             pageToShow.style.display = "block";
         }
 
+        function validateFileType() {
+            var fileName = $("#fileName").val();
+            var idxDot = fileName.lastIndexOf(".")+1;
+            var extFile = fileName.substr(idxDot, fileName.length).toLowerCase();
+            if(extFile !="jpg" && extFile !="jpeg" && extFile !="png") {
+                alert("이미지 파일만 업로드 해주세요");
+                $("#fileName").val('');
+            }
+        }
+
     </script>
     <section class="sidenav-content">
         <div class="input-place-content">
@@ -36,11 +46,77 @@
             </div>
 
             <div class="add_place" id="firstRegisterPage">
+                <form>
+                    <div class="add-form-wrapper">
+                        <table class="add-place-table">
+                            <tr>
+                                <th>지역 설정</th>
+                                <td>
+                                    <select class="custom-select-addr">
+                                        <option value="none">광역시/도</option>
+                                    </select>
 
+                                    <select class="custom-select-addr">
+                                        <option value="none">시/군/구</option>
+                                    </select>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <th>음식점명</th>
+                                <td>
+                                    <input class="input-place-info" type="text">
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <th>방문일시</th>
+                                <td>
+                                    <input class="input-place-info" type="text">
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <th>방문 인원</th>
+                                <td>
+                                    <input class="input-place-info" type="text">
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <th>사용금액</th>
+                                <td>
+                                    <input class="input-place-info" type="text">
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <th>위도/경도</th>
+                                <td>
+                                    <input class="input-place-info" type="text" placeholder="위도">
+                                    <input class="input-place-info" type="text" placeholder="경도">
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <th>음식점 사진</th>
+                                <td>
+                                    <input type="file" id="fileName" accept="image/*" onchange="validateFileType()"/>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="btn-right">
+                        <button type="button" class="btn-add-place">등록하기</button>
+                    </div>
+                </form>
             </div>
 
             <div class="add_place" id="addVisitPage">
-
+                <form>
+                    <div>음식점명</div>
+                    <input type="text">
+                </form>
             </div>
         </div>
     </section>

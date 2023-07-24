@@ -18,18 +18,20 @@
 
     <div id="wrap">
         <nav id="nav_content">
-            <div class="title_dashboard">
-                <h1>관리자 페이지</h1>
-            </div>
+            <a th:href="@{/admin/dashboard}">
+                <div class="title_dashboard">
+                    <h1>관리자 페이지</h1>
+                </div>
+            </a>
 
             <ul class="menu_accordiaon">
                 <li>
-                    <div class="menu_depth_1_accordiaon" data-toggle-id="1">
+                    <div class="menu_depth_1_accordiaon menu_accordiaon_active" data-toggle-id="1">
                         음식점 관리
                     </div>
-                    <ul class="menu_cont" style="display: none" data-toggle-id="1">
+                    <ul class="menu_cont" style="display: block" data-toggle-id="1">
                         <li>
-                            <a href="">음식점 입력</a>
+                            <a href="">음식점 등록</a>
                         </li>
                     </ul>
 

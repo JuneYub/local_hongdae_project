@@ -39,10 +39,10 @@ public class AdminController {
 
     @PostMapping("admin/getDistricts")
     @ResponseBody
-    public void getDistricts(@RequestBody HashMap<String, Object> map) {
+    public List<District> getDistricts(@RequestBody HashMap<String, Object> map) {
         System.out.println(map.get("cityId"));
         int cityId = Integer.parseInt(map.get("cityId").toString());
         List<District> districts = adminService.getDistrictsById(cityId);
-
+        return districts;
     }
 }

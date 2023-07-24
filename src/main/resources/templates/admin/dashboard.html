@@ -7,7 +7,11 @@
 </head>
 <body>
 <th:block layout:fragment="content">
-    <script>
+    <script th:inline="javascript">
+        /*<![CDATA[*/
+        const ctxPath = /*[[ @{/} ]]*/ '';
+        /*]]>*/
+
         $(document).ready(function() {
             $("input[value='firstRegisterPage']").prop('checked', true);
             $("#firstRegisterPage").css('display', 'block');
@@ -34,6 +38,41 @@
             }
         }
 
+        function addFirstVisit() {
+            var frm = document.frmFirstVisitRestaurant;
+
+            var i = $("select[name='selectedCity']").val();
+            console.log(i);
+        }
+
+        function getDistrictsByCity(selectElement) {
+            var selectElementVal = selectElement.value;
+            if(selectElementVal == "none") {
+                $(select[name='selectedDistrict'].val(""));
+            } else {
+                var city = {"cityId": selectElementVal};
+                $.ajax({
+                    url: ctxPath+"admin/getDistricts",
+                    processData: false,
+                    contentType: "application/json",
+                    type: "POST",
+                    async:true,
+                    data: JSON.stringify(city),
+                    dataType: "json",
+                    success : function(data) {
+                        $("select[name='selectedDistrict']").children('option:not(:first)').remove();
+                        $.each(data, function(index, item) {
+                           $("select[name='selectedDistrict']").append('<option value="' + item.district_id +'">' + item.district_name + '</option');
+                        });
+                    },
+                    error: function(request, status, error){
+                        alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
+                    }
+                });
+            }
+
+        }
+
     </script>
     <section class="sidenav-content">
         <div class="input-place-content">
@@ -46,17 +85,19 @@
             </div>
 
             <div class="add_place" id="firstRegisterPage">
-                <form>
+                <form name="frmFirstVisitRestaurant">
                     <div class="add-form-wrapper">
                         <table class="add-place-table">
                             <tr>
                                 <th>지역 설정</th>
                                 <td>
-                                    <select class="custom-select-addr">
+                                    <select class="custom-select-addr" name="selectedCity" onchange="getDistrictsByCity(this)">
                                         <option value="none">광역시/도</option>
+                                        <option th:each="city : ${cities}" th:value="${city.getCity_id}" th:text="${city.getCity_name}"></option>
+
                                     </select>
 
-                                    <select class="custom-select-addr">
+                                    <select class="custom-select-addr" name="selectedDistrict">
                                         <option value="none">시/군/구</option>
                                     </select>
                                 </td>
@@ -107,7 +148,7 @@
                         </table>
                     </div>
                     <div class="btn-right">
-                        <button type="button" class="btn-add-place">등록하기</button>
+                        <button type="button" class="btn-add-place" onclick="addFirstVisit()">등록하기</button>
                     </div>
                 </form>
             </div>

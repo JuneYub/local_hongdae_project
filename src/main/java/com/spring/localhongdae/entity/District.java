@@ -10,5 +10,17 @@ public class District {
 
     private String district_name;
 
-    private int city_id;
+    private int fk_city_id;
+
+    public int getDistrict_id() {
+        return district_id;
+    }
+
+    public String getDistrict_name() {
+        return district_name;
+    }
+
+    public int getCity_id() {
+        return fk_city_id;
+    }
 }

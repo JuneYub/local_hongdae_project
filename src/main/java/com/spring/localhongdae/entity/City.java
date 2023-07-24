@@ -10,4 +10,11 @@ public class City {
 
     private String city_name;
 
+    public int getCity_id() {
+        return city_id;
+    }
+
+    public String getCity_name() {
+        return city_name;
+    }
 }

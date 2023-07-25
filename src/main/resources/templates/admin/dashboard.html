@@ -13,8 +13,60 @@
         /*]]>*/
 
         $(document).ready(function() {
-            $("input[value='firstRegisterPage']").prop('checked', true);
+            const regDate = /^\d{4}\d{2}\d{2}$/;
+
+            $("#firstRegister").prop("checked", true);
+            $("input[name='firstRegisterPage']").prop('checked', true);
             $("#firstRegisterPage").css('display', 'block');
+
+            // 방문날짜 유효성 검사
+            $("input[name='visitDay']").bind("keyup", function(e) {
+                if(!isValidDateYYYYMMDD(e.target.value)) {
+                    $("#warningVisitDay").css({"display" : "block"});
+                } else {
+                    $("#warningVisitDay").css({"display" : "none"});
+                }
+            });
+
+            // 방문인원 유효성 검사
+            $("input[name='visitorsNum']").bind("keyup", function(e) {
+                if(!isValidNumberInput(e.target.value)) {
+                    $("#warningVisitorsNum").css({"display" : "block"});
+                } else {
+                    $("#warningVisitorsNum").css({"display" : "none"});
+                }
+            });
+
+            // 사용금액 유효성 검사
+            $("input[name='spendMoney']").bind("keyup", function(e) {
+                var price = e.target.value;
+                price = price.replace(/,/g, '');
+
+                if(!isValidNumberInput(price)) {
+                    $("#warningSpendMoney").css({"display" : "block"});
+                } else {
+                    $("#warningSpendMoney").css({"display" : "none"});
+                    var formatedNum = Number(price).toLocaleString();
+                    $("input[name='spendMoney']").val(formatedNum);
+                }
+            });
+
+            // 위도, 경도 유효성 검사
+            $("input[name='latitude']").bind("keyup", function(e) {
+                if(!isValidDecimalNumberInput(e.target.value)) {
+                    $("#warningLongitude").css({"display" : "block"});
+                } else {
+                    $("#warningLongitude").css({"display" : "none"});
+                }
+            });
+
+            $("input[name='longitude']").bind("keyup", function(e) {
+                if(!isValidDecimalNumberInput(e.target.value)) {
+                    $("#warningLongitude").css({"display" : "block"});
+                } else {
+                    $("#warningLongitude").css({"display" : "none"});
+                }
+            });
         })
 
         function showPage(radio) {
@@ -41,8 +93,48 @@
         function addFirstVisit() {
             var frm = document.frmFirstVisitRestaurant;
 
-            var i = $("select[name='selectedCity']").val();
-            console.log(i);
+            var cityID = $("select[name='selectedCity']").val();
+            var districtID = $("select[name='selectedDistrict']").val();
+            var restaurantName = $("input[name='restaurantName']").val();
+            var visitDay = $("input[name='visitDay']").val();
+            var visitorsNum = $("input[name='visitorsNum']").val();
+            var spendMoney = $("input[name='spendMoney']").val();
+            var latitude = $("input[name='latitude']").val();
+            var longitude = $("input[name='latitude']").val();
+            var fileName = $("input[name='fileName']").val();
+
+
+        }
+        function isValidDecimalNumberInput(inputValue) {
+            const regDecimalNubmer = /^\d+(\.\d+)?$/;
+            return regDecimalNubmer.test(inputValue);
+        }
+
+        function isValidNumberInput(inputValue) {
+            const regNumber = /^[0-9]+$/;
+            return regNumber.test(inputValue);
+        }
+
+        function isValidDateYYYYMMDD(dateString) {
+            const regDate = /^\d{4}\d{2}\d{2}$/;
+            if(!regDate.test(dateString)) {
+                return false;
+            }
+
+            const year = parseInt(dateString.substr(0,4));
+            const month = parseInt(dateString.substr(4,2));
+            const day = parseInt(dateString.substr(6,2));
+
+            if(month < 1 || month > 12) {
+                return false;
+            }
+
+            const lastDayOfMont = new Date(year, month, 0).getDate();
+            if(day < 1 || day > lastDayOfMont) {
+                return false;
+            }
+
+            return true;
         }
 
         function getDistrictsByCity(selectElement) {
@@ -106,43 +198,47 @@
                             <tr>
                                 <th>음식점명</th>
                                 <td>
-                                    <input class="input-place-info" type="text">
+                                    <input class="input-place-info" name="restaurantName" type="text">
                                 </td>
                             </tr>
 
                             <tr>
                                 <th>방문일시</th>
                                 <td>
-                                    <input class="input-place-info" type="text">
+                                    <input class="input-place-info" name="visitDay" type="text" placeholder="YYYYMMDD">
+                                    <p class="waring-input" id="warningVisitDay">* 정확한 날짜를 입력해주세요</p>
                                 </td>
                             </tr>
 
                             <tr>
                                 <th>방문 인원</th>
                                 <td>
-                                    <input class="input-place-info" type="text">
+                                    <input class="input-place-info" name="visitorsNum" type="text" placeholder="숫자만 입력해주세요">
+                                    <p class="waring-input" id="warningVisitorsNum">* 숫자만 입력해주세요</p>
                                 </td>
                             </tr>
 
                             <tr>
                                 <th>사용금액</th>
                                 <td>
-                                    <input class="input-place-info" type="text">
+                                    <input class="input-place-info" name="spendMoney" type="text" placeholder="숫자만 입력해주세요">
+                                    <p class="waring-input" id="warningSpendMoney">* 숫자만 입력해주세요</p>
                                 </td>
                             </tr>
 
                             <tr>
                                 <th>위도/경도</th>
                                 <td>
-                                    <input class="input-place-info" type="text" placeholder="위도">
-                                    <input class="input-place-info" type="text" placeholder="경도">
+                                    <input class="input-place-info" name="latitude" type="text" placeholder="위도">
+                                    <input class="input-place-info" name="longitude" type="text" placeholder="경도">
+                                    <p class="waring-input" id="warningLongitude">* 위도 경도 모두 숫자를 입력해주세요</p>
                                 </td>
                             </tr>
 
                             <tr>
                                 <th>음식점 사진</th>
                                 <td>
-                                    <input type="file" id="fileName" accept="image/*" onchange="validateFileType()"/>
+                                    <input type="file" id="fileName" name="fileName" accept="image/*" onchange="validateFileType()"/>
                                 </td>
                             </tr>
                         </table>

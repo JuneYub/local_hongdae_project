@@ -91,19 +91,69 @@
         }
 
         function addFirstVisit() {
-            var frm = document.frmFirstVisitRestaurant;
-
             var cityID = $("select[name='selectedCity']").val();
             var districtID = $("select[name='selectedDistrict']").val();
             var restaurantName = $("input[name='restaurantName']").val();
             var visitDay = $("input[name='visitDay']").val();
             var visitorsNum = $("input[name='visitorsNum']").val();
             var spendMoney = $("input[name='spendMoney']").val();
+            spendMoney = spendMoney.replace(/,/g, '');
             var latitude = $("input[name='latitude']").val();
-            var longitude = $("input[name='latitude']").val();
+            var longitude = $("input[name='longitude']").val();
             var fileName = $("input[name='fileName']").val();
 
+            if(cityID == 'none' || districtID == 'none') {
+                alert("지역을 선택해주세요");
+                return;
+            }
+            if(restaurantName.trim() == "") {
+                alert("음식점명을 입력해주세요");
+                return;
+            }
+            if(visitDay.trim() == "" || !isValidDateYYYYMMDD(visitDay)) {
+                alert("방문날짜를 확인해주세요");
+                return;
+            }
+            if(visitorsNum.trim() == "" || !isValidNumberInput(visitorsNum) || visitorsNum == 0) {
+                alert("방문인원수를 확인해주세요");
+                return;
+            };
+            if(spendMoney.trim() == "" || !isValidNumberInput(spendMoney)) {
+                alert("사용금액을 확인해주세요");
+                return;
+            }
+            if(latitude.trim() == "" || !isValidDecimalNumberInput(latitude)) {
+                alert("위도 값을 확인해주세요");
+                return;
+            }
+            if(longitude.trim() == "" || !isValidDecimalNumberInput(longitude)) {
+                alert("경도 값을 확인해주세요");
+                return;
+            }
+            if(fileName.trim() =="" ) {
+                alert("사진 파일을 업로드 해주세요");
+                return;
+            }
 
+            const frm = $("form[name='frmFirstVisitRestaurant']");
+            const formData = new FormData(frm[0]);
+
+            $.ajax({
+                url: ctxPath+"admin/registerRestaurant",
+                enctype: 'multipart/form-data',
+                processData: false,
+                contentType: false,
+                type: "POST",
+                async: true,
+                data: formData,
+                dataType: "json",
+                success: function (json) {
+                    console.log(json.n);
+                },
+                error: function (request, status, error) {
+                    alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
+                }
+            });
         }
         function isValidDecimalNumberInput(inputValue) {
             const regDecimalNubmer = /^\d+(\.\d+)?$/;
@@ -133,7 +183,6 @@
             if(day < 1 || day > lastDayOfMont) {
                 return false;
             }
-
             return true;
         }
 
@@ -177,7 +226,7 @@
             </div>
 
             <div class="add_place" id="firstRegisterPage">
-                <form name="frmFirstVisitRestaurant">
+                <form name="frmFirstVisitRestaurant" enctype=”multipart/form-data”>
                     <div class="add-form-wrapper">
                         <table class="add-place-table">
                             <tr>

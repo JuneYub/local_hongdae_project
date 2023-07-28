@@ -22,20 +22,22 @@ import java.util.List;
 @Slf4j
 @Service
 public class AdminService implements InterAdminService {
-    @Autowired
-    CityRepository cityRepository;
+    private final CityRepository cityRepository;
+    private final DistrictsRepository districtsRepository;
+    private final PlaceRepository placeRepository;
+    private final VisitHistoryRepository visitHistoryRepository;
+    private final FileManger fileManger;
 
     @Autowired
-    DistrictsRepository districtsRepository;
-
-    @Autowired
-    PlaceRepository placeRepository;
-
-    @Autowired
-    VisitHistoryRepository visitHistoryRepository;
-
-    @Autowired
-    FileManger fileManger;
+    public AdminService(CityRepository cityRepository, DistrictsRepository districtsRepository,
+                        PlaceRepository placeRepository, VisitHistoryRepository visitHistoryRepository,
+                        FileManger fileManger) {
+        this.cityRepository = cityRepository;
+        this.districtsRepository = districtsRepository;
+        this.placeRepository = placeRepository;
+        this.visitHistoryRepository = visitHistoryRepository;
+        this.fileManger = fileManger;
+    }
 
     @Override
     public List<City> getCities() {
@@ -51,7 +53,8 @@ public class AdminService implements InterAdminService {
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void registerRestaurant(MultipartHttpServletRequest mrequest) {
+    public int registerRestaurant(MultipartHttpServletRequest mrequest) {
+        int result = 0;
         String path = System.getProperty("user.dir") + "\\src\\main\\resources\\static\\img\\restaurant";
 
         int cityId = Integer.parseInt((String) mrequest.getParameter("selectedCity"));
@@ -64,19 +67,15 @@ public class AdminService implements InterAdminService {
         Double longitude = Double.parseDouble((String) mrequest.getParameter("longitude"));
         MultipartFile file = mrequest.getFile("fileName");
 
-        log.info("fileName :" + file.getOriginalFilename());
-        log.info("fileName :" + file.getName());
-
         try {
             String imageId = fileManger.imageUpload(file.getBytes(), file.getOriginalFilename(), path);
             Place place = placeRepository.save(new Place(districtId, placeName, latitude, longitude, imageId));
-            visitHistoryRepository.save(new VisitHistory(place.getPlace_id(), visitDay, visitors, spentMoney));
+            VisitHistory visitHistory = visitHistoryRepository.save(new VisitHistory(place.getPlace_id(), visitDay, visitors, spentMoney));
+            result = visitHistory.getPk_visit_id();
         } catch (IOException e) {
             e.printStackTrace();
         }
 
-
+        return result;
     }
-
-
 }

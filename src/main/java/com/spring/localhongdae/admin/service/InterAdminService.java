@@ -15,5 +15,5 @@ public interface InterAdminService {
     List<District> getDistrictsById(int cityId);
     
     // 처음 음식점을 등록
-    void registerRestaurant(MultipartHttpServletRequest mrequest) throws IOException;
+    int registerRestaurant(MultipartHttpServletRequest mrequest) throws IOException;
 }

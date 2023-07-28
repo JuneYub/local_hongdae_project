@@ -148,7 +148,11 @@
                 data: formData,
                 dataType: "json",
                 success: function (json) {
-                    console.log(json.n);
+                    if(json.result != 0) {
+                        alert("정상적으로 등록했습니다");
+                    } else {
+                        alert("등록에 문제가 생겼습니다");
+                    }
                 },
                 error: function (request, status, error) {
                     alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
@@ -189,7 +193,7 @@
         function getDistrictsByCity(selectElement) {
             var selectElementVal = selectElement.value;
             if(selectElementVal == "none") {
-                $(select[name='selectedDistrict'].val(""));
+                $("select[name='selectedDistrict']").children('option:not(:first)').remove();
             } else {
                 var city = {"cityId": selectElementVal};
                 $.ajax({

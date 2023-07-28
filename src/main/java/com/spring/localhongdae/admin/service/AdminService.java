@@ -2,14 +2,17 @@ package com.spring.localhongdae.admin.service;
 
 import com.spring.localhongdae.admin.model.CityRepository;
 import com.spring.localhongdae.admin.model.DistrictsRepository;
+import com.spring.localhongdae.admin.model.PlaceRepository;
+import com.spring.localhongdae.admin.model.VisitHistoryRepository;
 import com.spring.localhongdae.common.FileManger;
 import com.spring.localhongdae.entity.City;
 import com.spring.localhongdae.entity.District;
+import com.spring.localhongdae.entity.Place;
+import com.spring.localhongdae.entity.VisitHistory;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
@@ -24,6 +27,12 @@ public class AdminService implements InterAdminService {
 
     @Autowired
     DistrictsRepository districtsRepository;
+
+    @Autowired
+    PlaceRepository placeRepository;
+
+    @Autowired
+    VisitHistoryRepository visitHistoryRepository;
 
     @Autowired
     FileManger fileManger;
@@ -41,9 +50,9 @@ public class AdminService implements InterAdminService {
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public void registerRestaurant(MultipartHttpServletRequest mrequest) {
         String path = System.getProperty("user.dir") + "\\src\\main\\resources\\static\\img\\restaurant";
-        System.out.println(path);
 
         int cityId = Integer.parseInt((String) mrequest.getParameter("selectedCity"));
         int districtId = Integer.parseInt((String) mrequest.getParameter("selectedDistrict"));
@@ -55,21 +64,18 @@ public class AdminService implements InterAdminService {
         Double longitude = Double.parseDouble((String) mrequest.getParameter("longitude"));
         MultipartFile file = mrequest.getFile("fileName");
 
-        log.info("입력 값 테스트");
-        log.info("cityId :" + cityId);
-        log.info("districtId :" + districtId);
-        log.info("placeName :" + placeName);
-        log.info("visitDay :" + visitDay);
-        log.info("visitors :" + visitors);
-        log.info("spentMoney :" + spentMoney);
         log.info("fileName :" + file.getOriginalFilename());
         log.info("fileName :" + file.getName());
 
         try {
-            fileManger.imageUpload(file.getBytes(), file.getOriginalFilename(), path);
+            String imageId = fileManger.imageUpload(file.getBytes(), file.getOriginalFilename(), path);
+            Place place = placeRepository.save(new Place(districtId, placeName, latitude, longitude, imageId));
+            visitHistoryRepository.save(new VisitHistory(place.getPlace_id(), visitDay, visitors, spentMoney));
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+
     }
 
 

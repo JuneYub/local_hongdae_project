@@ -13,10 +13,19 @@ public class Place {
     int place_id;
 
     private int fk_district_id;
+
+    public Place(int fk_district_id, String place_name, Double latitude, Double longitude, String image_id) {
+        this.fk_district_id = fk_district_id;
+        this.place_name = place_name;
+        this.latitude = latitude;
+        this.longitude = longitude;
+        this.image_id = image_id;
+    }
+
     private String place_name;
     private Double latitude;
     private Double longitude;
-    private int image_id;
+    private String image_id;
 
     public int getPlace_id() {
         return place_id;
@@ -58,11 +67,11 @@ public class Place {
         this.longitude = longitude;
     }
 
-    public int getImage_id() {
+    public String getImage_id() {
         return image_id;
     }
 
-    public void setImage_id(int image_id) {
+    public void setImage_id(String image_id) {
         this.image_id = image_id;
     }
 }

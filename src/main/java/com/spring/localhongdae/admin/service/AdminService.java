@@ -9,7 +9,9 @@ import com.spring.localhongdae.entity.City;
 import com.spring.localhongdae.entity.District;
 import com.spring.localhongdae.entity.Place;
 import com.spring.localhongdae.entity.VisitHistory;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
+import org.json.JSONArray;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -77,5 +79,24 @@ public class AdminService implements InterAdminService {
         }
 
         return result;
+    }
+
+    @Override
+    public void registerVisitHistory(HttpServletRequest request) {
+        String districtID = request.getParameter("districtID");
+        String restaurantName = request.getParameter("vh_restaurantName");
+        String vh_visitDay = request.getParameter("vh_visitDay");
+        String vh_visitorsNum = request.getParameter("vh_visitorsNum");
+        String vh_spendMoney = request.getParameter("vh_spendMoney");
+    }
+
+    @Override
+    public List<Place> findPlaceList(HttpServletRequest request) {
+        int districtId = Integer.parseInt(request.getParameter("districtId"));
+        String placeName = request.getParameter("placeName");
+        //System.out.println("---------------------------------------------------------- " + placeName);
+        List<Place> placeList = placeRepository.findByDistrictIdAndPlaceName(districtId, placeName);
+
+        return placeList;
     }
 }

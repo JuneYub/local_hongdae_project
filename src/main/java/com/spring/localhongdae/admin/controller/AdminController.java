@@ -3,7 +3,9 @@ package com.spring.localhongdae.admin.controller;
 import com.spring.localhongdae.admin.service.AdminService;
 import com.spring.localhongdae.entity.City;
 import com.spring.localhongdae.entity.District;
+import com.spring.localhongdae.entity.Place;
 import jakarta.servlet.ServletContext;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import lombok.extern.slf4j.Slf4j;
 import org.json.JSONObject;
@@ -56,6 +58,22 @@ public class AdminController {
         int result = adminService.registerRestaurant(mrequest);
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("result", String.valueOf(result));
+        log.info("첫방문 등록 결과 : " + String.valueOf(result));
         return jsonObject.toString();
     }
+
+/*    @PostMapping("admin/registerVisitHistory")
+    @ResponseBody
+    public String registerVisitHistory(HttpServletRequest request) {
+        adminService.registerVisitHistory(request);
+        return "test";
+    }*/
+
+    @GetMapping("admin/findPlace")
+    @ResponseBody
+    public List<Place> findPlaceList(HttpServletRequest request) {
+        List<Place> placeList = adminService.findPlaceList(request);
+        return placeList;
+    }
+
 }

@@ -13,6 +13,10 @@ public class Place {
     int place_id;
 
     private int fk_district_id;
+    private String place_name;
+    private Double latitude;
+    private Double longitude;
+    private String image_id;
 
     public Place(int fk_district_id, String place_name, Double latitude, Double longitude, String image_id) {
         this.fk_district_id = fk_district_id;
@@ -22,10 +26,7 @@ public class Place {
         this.image_id = image_id;
     }
 
-    private String place_name;
-    private Double latitude;
-    private Double longitude;
-    private String image_id;
+    public Place() {}
 
     public int getPlace_id() {
         return place_id;

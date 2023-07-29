@@ -1,12 +1,15 @@
 package com.spring.localhongdae.entity;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 
 @Entity
 public class VisitHistory {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int pk_visit_id;
 
     private int fk_place_id;
@@ -21,8 +24,7 @@ public class VisitHistory {
         this.spent_money = spent_money;
     }
 
-    private VisitHistory() {
-    }
+    public VisitHistory() {}
 
     public int getPk_visit_id() {
         return pk_visit_id;

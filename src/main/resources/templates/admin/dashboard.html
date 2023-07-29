@@ -13,6 +13,7 @@
         /*]]>*/
 
         $(document).ready(function() {
+            $("div#displayList").hide();
             const regDate = /^\d{4}\d{2}\d{2}$/;
 
             $("#firstRegister").prop("checked", true);
@@ -28,12 +29,28 @@
                 }
             });
 
+            $("input[name='vh_visitDay']").bind("keyup", function(e) {
+                if(!isValidDateYYYYMMDD(e.target.value)) {
+                    $("#vh_warningVisitDay").css({"display" : "block"});
+                } else {
+                    $("#vh_warningVisitDay").css({"display" : "none"});
+                }
+            });
+
             // 방문인원 유효성 검사
             $("input[name='visitorsNum']").bind("keyup", function(e) {
                 if(!isValidNumberInput(e.target.value)) {
                     $("#warningVisitorsNum").css({"display" : "block"});
                 } else {
                     $("#warningVisitorsNum").css({"display" : "none"});
+                }
+            });
+
+            $("input[name='vh_visitorsNum']").bind("keyup", function(e) {
+                if(!isValidNumberInput(e.target.value)) {
+                    $("#vh_warningVisitorsNum").css({"display" : "block"});
+                } else {
+                    $("#vh_warningVisitorsNum").css({"display" : "none"});
                 }
             });
 
@@ -48,6 +65,20 @@
                     $("#warningSpendMoney").css({"display" : "none"});
                     var formatedNum = Number(price).toLocaleString();
                     $("input[name='spendMoney']").val(formatedNum);
+                }
+            });
+
+            // 사용금액 유효성 검사
+            $("input[name='vh_spendMoney']").bind("keyup", function(e) {
+                var price = e.target.value;
+                price = price.replace(/,/g, '');
+
+                if(!isValidNumberInput(price)) {
+                    $("#vh_warningSpendMoney").css({"display" : "block"});
+                } else {
+                    $("#vh_warningSpendMoney").css({"display" : "none"});
+                    var formatedNum = Number(price).toLocaleString();
+                    $("input[name='vh_spendMoney']").val(formatedNum);
                 }
             });
 
@@ -67,7 +98,62 @@
                     $("#warningLongitude").css({"display" : "none"});
                 }
             });
-        })
+
+            $("input[name='vh_restaurantName']").bind("keyup", function(e) {
+                const nameLength = $(this).val().trim().length;
+                if(nameLength ==0) {
+                    $("div#displayList").hide();
+                }
+                else {
+                    var districtId = $("select[name='vh_selectedDistrict']").val();
+                    var placeName = e.target.value;
+                    if(districtId == "none") return;
+                    $.ajax({
+                        url:ctxPath+"admin/findPlace",
+                        type:"GET",
+                        data:{
+                            "districtId" : districtId,
+                            "placeName" : placeName,
+                        },
+                        dataType:"json",
+                        success:function(data) {
+                            var placesJson = data.map(function(item) {
+                                return item.place_name;
+                            });
+                            var places = JSON.stringify(placesJson);
+                            //console.log(places);
+                            var placesIdJson = data.map(function (item) {
+                                return item.place_id;
+                            });
+                            var placeIdList = JSON.stringify(placesIdJson);
+                            //console.log(placesIdJson);
+
+                            if(data.length > 0) {
+                                var html = "";
+                                $.each(data, function(index, item) {
+                                    const name = item.place_name;
+                                    const id = item.place_id;
+                                    console.log(name);
+                                    const result = "<span style='cursor:pointer; display: inline-block' class='display_cont' data-id='" + id + "'>" + name + "</span>";
+                                    html += result;
+                                });
+                                const input_width = $("input[name='vh_restaurantName']").css("width");
+                                $("div#displayList").css({"width":input_width});
+                                $("div#displayList").html(html);
+                                $("div#displayList").show();
+                            }
+
+                        }
+                    });
+                }
+            }); // $("input[name='vh_restaurantName']").bind("keyup", function(e) { --------------------------------------------------------------
+
+            $(document).on("click", ".display_cont", function() {
+                const id = $(this).data("id");
+                const name = console.log($(this).html());
+            });
+
+        }); // end of $(document).ready(function() -----------------------------------------------------------------------------------------------
 
         function showPage(radio) {
             var pages = document.getElementsByClassName("add_place");
@@ -144,7 +230,7 @@
                 processData: false,
                 contentType: false,
                 type: "POST",
-                async: true,
+                async: false,
                 data: formData,
                 dataType: "json",
                 success: function (json) {
@@ -159,6 +245,67 @@
                 }
             });
         }
+
+        function addVisitHistory() {
+            var cityID = $("select[name='vh_selectedCity']").val();
+            var districtID = $("select[name='vh_selectedDistrict']").val();
+            var restaurantName = $("input[name='vh_restaurantName']").val();
+            var visitDay = $("input[name='vh_visitDay']").val();
+            var visitorsNum = $("input[name='vh_visitorsNum']").val();
+            var spendMoney = $("input[name='vh_spendMoney']").val();
+            spendMoney = spendMoney.replace(/,/g, '');
+
+            if(cityID == 'none' || districtID == 'none') {
+                alert("지역을 선택해주세요");
+                return;
+            }
+            if(restaurantName.trim() == "") {
+                alert("음식점명을 입력해주세요");
+                return;
+            }
+            if(visitDay.trim() == "" || !isValidDateYYYYMMDD(visitDay)) {
+                alert("방문날짜를 확인해주세요");
+                return;
+            }
+            if(visitorsNum.trim() == "" || !isValidNumberInput(visitorsNum) || visitorsNum == 0) {
+                alert("방문인원수를 확인해주세요");
+                return;
+            };
+            if(spendMoney.trim() == "" || !isValidNumberInput(spendMoney)) {
+                alert("사용금액을 확인해주세요");
+                return;
+            }
+
+            const frm = $("form[name='frmVisitRestaurant']");
+            const formData = new FormData(frm[0]);
+
+            $.ajax({
+                url: ctxPath+"admin/registerVisitHistory",
+                processData: false,
+                contentType: false,
+                type: "POST",
+                async: false,
+                data: formData,
+                dataType: "json",
+                success: function (json) {
+                    if(json.result != 0) {
+                        alert("정상적으로 등록했습니다");
+                    } else {
+                        alert("등록에 문제가 생겼습니다");
+                    }
+                },
+                error: function (request, status, error) {
+                    alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
+                }
+            });
+        }
+
+        function selectRestaurant(restaurantId) {
+            console.log(restaurantId);
+        }
+
+        <!-- ----------------------------------------------- 공통 메소드 시작 ------------------------------------------ -->
+
         function isValidDecimalNumberInput(inputValue) {
             const regDecimalNubmer = /^\d+(\.\d+)?$/;
             return regDecimalNubmer.test(inputValue);
@@ -201,13 +348,41 @@
                     processData: false,
                     contentType: "application/json",
                     type: "POST",
-                    async:true,
+                    async:false,
                     data: JSON.stringify(city),
                     dataType: "json",
                     success : function(data) {
                         $("select[name='selectedDistrict']").children('option:not(:first)').remove();
                         $.each(data, function(index, item) {
                            $("select[name='selectedDistrict']").append('<option value="' + item.district_id +'">' + item.district_name + '</option');
+                        });
+                    },
+                    error: function(request, status, error){
+                        alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
+                    }
+                });
+            }
+
+        }
+
+        function vh_getDistrictsByCity(selectElement) {
+            var selectElementVal = selectElement.value;
+            if(selectElementVal == "none") {
+                $("select[name='vh_selectedDistrict']").children('option:not(:first)').remove();
+            } else {
+                var city = {"cityId": selectElementVal};
+                $.ajax({
+                    url: ctxPath+"admin/getDistricts",
+                    processData: false,
+                    contentType: "application/json",
+                    type: "POST",
+                    async:false,
+                    data: JSON.stringify(city),
+                    dataType: "json",
+                    success : function(data) {
+                        $("select[name='vh_selectedDistrict']").children('option:not(:first)').remove();
+                        $.each(data, function(index, item) {
+                            $("select[name='vh_selectedDistrict']").append('<option value="' + item.district_id +'">' + item.district_name + '</option');
                         });
                     },
                     error: function(request, status, error){
@@ -303,9 +478,63 @@
             </div>
 
             <div class="add_place" id="addVisitPage">
-                <form>
-                    <div>음식점명</div>
-                    <input type="text">
+                <form name="frmVisitRestaurant">
+                    <div class="add-form-wrapper">
+                        <table class="add-place-table">
+                            <tr>
+                                <th>지역 설정</th>
+                                <td>
+                                    <select class="custom-select-addr" name="vh_selectedCity" onchange="vh_getDistrictsByCity(this)">
+                                        <option value="none">광역시/도</option>
+                                        <option th:each="city : ${cities}" th:value="${city.getCity_id}" th:text="${city.getCity_name}"></option>
+
+                                    </select>
+
+                                    <select class="custom-select-addr" name="vh_selectedDistrict">
+                                        <option value="none">시/군/구</option>
+                                    </select>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <th>음식점명</th>
+                                <td>
+                                    <input class="input-place-info" name="vh_restaurantName" type="text">
+                                    <div id="displayList" class="search-place-list">
+                                    </div>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <th>방문일시</th>
+                                <td>
+                                    <input class="input-place-info" name="vh_visitDay" type="text" placeholder="YYYYMMDD">
+                                    <p class="waring-input" id="vh_warningVisitDay">* 정확한 날짜를 입력해주세요</p>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <th>방문 인원</th>
+                                <td>
+                                    <input class="input-place-info" name="vh_visitorsNum" type="text" placeholder="숫자만 입력해주세요">
+                                    <p class="waring-input" id="vh_warningVisitorsNum">* 숫자만 입력해주세요</p>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <th>사용금액</th>
+                                <td>
+                                    <input class="input-place-info" name="vh_spendMoney" type="text" placeholder="숫자만 입력해주세요">
+                                    <p class="waring-input" id="vh_warningSpendMoney">* 숫자만 입력해주세요</p>
+                                </td>
+                            </tr>
+                        </table>
+
+                        <div class="btn-right">
+                            <button type="button" class="btn-add-place" onclick="addVisitHistory()">등록하기</button>
+                        </div>
+
+                    </div>
                 </form>
             </div>
         </div>

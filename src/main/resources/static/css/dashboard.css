@@ -253,10 +253,32 @@ header {
     font-size: 20px;
     border-radius: 6px;
     box-shadow: black 2px 2px 6px;
+    cursor: pointer;
 }
 
 .waring-input {
     color: red;
     font-size: 15px;
     display: none;
+}
+
+.search-place-list {
+    position: absolute;
+    background-color: white;
+    border-width: 0px 1px 1px;
+    border-right-style: solid;
+    border-bottom-style: solid;
+    border-left-style: solid;
+    border-right-color: #e1e1e1;
+    border-bottom-color: #e1e1e1;
+    border-left-color: #e1e1e1;
+    border-image: initial;
+    border-top-style: initial;
+    border-top-color: initial;
+    height: 100px;
+    margin-top: -1px;
+    overflow: auto;
+    z-index: 5;
+    padding: 3px 15px;
+    font-size: 20px;
 }

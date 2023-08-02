@@ -121,19 +121,16 @@
                                 return item.place_name;
                             });
                             var places = JSON.stringify(placesJson);
-                            //console.log(places);
                             var placesIdJson = data.map(function (item) {
                                 return item.place_id;
                             });
                             var placeIdList = JSON.stringify(placesIdJson);
-                            //console.log(placesIdJson);
 
                             if(data.length > 0) {
                                 var html = "";
                                 $.each(data, function(index, item) {
                                     const name = item.place_name;
                                     const id = item.place_id;
-                                    console.log(name);
                                     const result = "<span style='cursor:pointer; display: inline-block' class='display_cont' data-id='" + id + "'>" + name + "</span>";
                                     html += result;
                                 });
@@ -148,9 +145,16 @@
                 }
             }); // $("input[name='vh_restaurantName']").bind("keyup", function(e) { --------------------------------------------------------------
 
+            // 자동완성된 음식점을 클릭할 시 음식점명과 아이디를 넣어준다.
             $(document).on("click", ".display_cont", function() {
                 const id = $(this).data("id");
-                const name = console.log($(this).html());
+                const name = $(this).html();
+
+                $("input[name='vh_restaurantId']").val(id);
+                $("input[name='vh_restaurantName']").val(name);
+                $("input[name='vh_restaurantName']").html(name);
+
+                $("div#displayList").hide();
             });
 
         }); // end of $(document).ready(function() -----------------------------------------------------------------------------------------------
@@ -300,9 +304,6 @@
             });
         }
 
-        function selectRestaurant(restaurantId) {
-            console.log(restaurantId);
-        }
 
         <!-- ----------------------------------------------- 공통 메소드 시작 ------------------------------------------ -->
 
@@ -500,6 +501,7 @@
                                 <th>음식점명</th>
                                 <td>
                                     <input class="input-place-info" name="vh_restaurantName" type="text">
+                                    <input type="hidden" name="vh_restaurantId" >
                                     <div id="displayList" class="search-place-list">
                                     </div>
                                 </td>

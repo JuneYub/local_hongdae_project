@@ -20,7 +20,7 @@ public interface InterAdminService {
     int registerRestaurant(MultipartHttpServletRequest mrequest) throws IOException;
 
     // 방문 정보를 등록
-    void registerVisitHistory(HttpServletRequest request);
+    int registerVisitHistory(HttpServletRequest request);
 
     // 음식점 이름 입력시 자동으로 검색해주는 기능
     List<Place> findPlaceList(HttpServletRequest request);

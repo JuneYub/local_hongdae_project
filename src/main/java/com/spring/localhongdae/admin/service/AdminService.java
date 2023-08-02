@@ -11,7 +11,6 @@ import com.spring.localhongdae.entity.Place;
 import com.spring.localhongdae.entity.VisitHistory;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
-import org.json.JSONArray;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,6 +18,8 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @Slf4j
@@ -82,21 +83,25 @@ public class AdminService implements InterAdminService {
     }
 
     @Override
-    public void registerVisitHistory(HttpServletRequest request) {
-        String districtID = request.getParameter("districtID");
-        String restaurantName = request.getParameter("vh_restaurantName");
-        String vh_visitDay = request.getParameter("vh_visitDay");
-        String vh_visitorsNum = request.getParameter("vh_visitorsNum");
-        String vh_spendMoney = request.getParameter("vh_spendMoney");
+    public int registerVisitHistory(HttpServletRequest request) {
+        int result = 1;
+        int restaurantId = Integer.parseInt(request.getParameter("vh_restaurantId"));
+        String visitDay = request.getParameter("vh_visitDay");
+        int visitorsNum = Integer.parseInt(request.getParameter("vh_visitorsNum"));
+        int spendMoney = Integer.parseInt(request.getParameter("vh_spendMoney").toString().replace(",",""));
+        try {
+            visitHistoryRepository.save(new VisitHistory(restaurantId, visitDay, visitorsNum, spendMoney));
+        } catch (IllegalArgumentException e) {
+            result = 1;
+        }
+        return result;
     }
 
     @Override
     public List<Place> findPlaceList(HttpServletRequest request) {
         int districtId = Integer.parseInt(request.getParameter("districtId"));
         String placeName = request.getParameter("placeName");
-        //System.out.println("---------------------------------------------------------- " + placeName);
         List<Place> placeList = placeRepository.findByDistrictIdAndPlaceName(districtId, placeName);
-
         return placeList;
     }
 }

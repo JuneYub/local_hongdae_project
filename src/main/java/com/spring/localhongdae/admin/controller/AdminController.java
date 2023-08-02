@@ -62,12 +62,14 @@ public class AdminController {
         return jsonObject.toString();
     }
 
-/*    @PostMapping("admin/registerVisitHistory")
+    @PostMapping("admin/registerVisitHistory")
     @ResponseBody
     public String registerVisitHistory(HttpServletRequest request) {
-        adminService.registerVisitHistory(request);
-        return "test";
-    }*/
+        int result = adminService.registerVisitHistory(request);
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("result", String.valueOf(result));
+        return jsonObject.toString();
+    }
 
     @GetMapping("admin/findPlace")
     @ResponseBody

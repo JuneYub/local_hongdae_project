@@ -1,27 +1,27 @@
 package com.spring.localhongdae.admin.service;
-
-import com.spring.localhongdae.admin.model.CityRepository;
-import com.spring.localhongdae.admin.model.DistrictsRepository;
 import com.spring.localhongdae.entity.City;
 import com.spring.localhongdae.entity.District;
+import com.spring.localhongdae.entity.VisitHistory;
+import jakarta.servlet.http.HttpServletRequest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.http.MediaType;
-import org.springframework.mock.web.MockMultipartFile;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.MockMvcBuilder;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import org.springframework.web.context.WebApplicationContext;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.sql.SQLException;
 import java.util.List;
 
 
 
+@Transactional
 @SpringBootTest
 class AdminServiceTest {
     @Autowired
@@ -47,7 +47,41 @@ class AdminServiceTest {
         assertThat(list.size()).isEqualTo(21);
     }
 
+    @Test
+    @DisplayName("방문 기록 추가 기능 테스트")
+    void registerVisitHistoryTest() {
+        // given
+        int placeid = 6; // 서울시 종로구 호랑이도삭면
+        VisitHistory visitHistory =
+                VisitHistory.builder()
+                .fk_place_id(placeid)
+                .visit_date("2023-05-05") // yyyy-MM-dd
+                .visitors(3)
+                .spent_money(30000)
+                .build();
+        // when
+        int result = adminService.registerVisitHistory(visitHistory);
 
+        // then
+        assertThat(result).isEqualTo(1);
+    }
 
-
+    @Test
+    @DisplayName("방문 기록 추가 기능 테스트")
+    void X_registerVisitHistoryTest() {
+        // given
+        int placeid = 1; // 없는 placeid
+        VisitHistory visitHistory =
+                VisitHistory.builder()
+                        .fk_place_id(placeid)
+                        .visit_date("2023-05-05") // yyyy-MM-dd
+                        .visitors(3)
+                        .spent_money(30000)
+                        .build();
+        assertThrows(DataIntegrityViolationException.class, () -> {
+            // when
+            int result = adminService.registerVisitHistory(visitHistory);
+            // then 무결성 제약조건 예외 발생
+        });
+    }
 }

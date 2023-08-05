@@ -2,6 +2,13 @@ server:
   port: 8081
 
 spring:
+  jpa:
+    # 쿼리 로그 show 설정
+    show_sql: true
+    properties:
+      hibernate:
+        # sql문 정렬하여 출력
+        format_sql: true
   datasource:
     url: jdbc:mysql://localhost:3306/gongibap
     username: root
@@ -23,6 +30,16 @@ spring:
   view-names: error
   check-template-location: true
   template-resolver-order: 0
+
+  # 바인딩되는 파라미터 값 출력
+  logging:
+    level:
+      org:
+        hibernate:
+          type:
+            descriptor:
+              sql: trace
+
 
 
 

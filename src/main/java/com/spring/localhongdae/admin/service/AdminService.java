@@ -83,16 +83,12 @@ public class AdminService implements InterAdminService {
     }
 
     @Override
-    public int registerVisitHistory(HttpServletRequest request) {
+    public int registerVisitHistory(VisitHistory visitHistory) {
         int result = 1;
-        int restaurantId = Integer.parseInt(request.getParameter("vh_restaurantId"));
-        String visitDay = request.getParameter("vh_visitDay");
-        int visitorsNum = Integer.parseInt(request.getParameter("vh_visitorsNum"));
-        int spendMoney = Integer.parseInt(request.getParameter("vh_spendMoney").toString().replace(",",""));
         try {
-            visitHistoryRepository.save(new VisitHistory(restaurantId, visitDay, visitorsNum, spendMoney));
+            visitHistoryRepository.save(visitHistory);
         } catch (IllegalArgumentException e) {
-            result = 1;
+            result = 0;
         }
         return result;
     }

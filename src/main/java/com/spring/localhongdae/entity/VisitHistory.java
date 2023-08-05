@@ -4,6 +4,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import lombok.Builder;
 
 import java.time.LocalDate;
 import java.util.Date;
@@ -20,6 +21,7 @@ public class VisitHistory {
     private int visitors;
     private int spent_money;
 
+    @Builder
     public VisitHistory(int fk_place_id, String visit_date, int visitors, int spent_money) {
         this.fk_place_id = fk_place_id;
         this.visit_date = visit_date;
@@ -68,4 +70,5 @@ public class VisitHistory {
     public void setSpent_money(int spent_money) {
         this.spent_money = spent_money;
     }
+
 }

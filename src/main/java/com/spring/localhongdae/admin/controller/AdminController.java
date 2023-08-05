@@ -4,6 +4,7 @@ import com.spring.localhongdae.admin.service.AdminService;
 import com.spring.localhongdae.entity.City;
 import com.spring.localhongdae.entity.District;
 import com.spring.localhongdae.entity.Place;
+import com.spring.localhongdae.entity.VisitHistory;
 import jakarta.servlet.ServletContext;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
@@ -65,7 +66,16 @@ public class AdminController {
     @PostMapping("admin/registerVisitHistory")
     @ResponseBody
     public String registerVisitHistory(HttpServletRequest request) {
-        int result = adminService.registerVisitHistory(request);
+
+        VisitHistory visitHistory =
+                VisitHistory.builder()
+                        .fk_place_id(Integer.parseInt(request.getParameter("vh_restaurantId")))
+                        .visit_date(request.getParameter("vh_visitDay")) // yyyy-MM-dd
+                        .visitors(Integer.parseInt(request.getParameter("vh_visitorsNum")))
+                        .spent_money(Integer.parseInt(request.getParameter("vh_spendMoney").toString().replace(",","")))
+                        .build();
+
+        int result = adminService.registerVisitHistory(visitHistory);
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("result", String.valueOf(result));
         return jsonObject.toString();

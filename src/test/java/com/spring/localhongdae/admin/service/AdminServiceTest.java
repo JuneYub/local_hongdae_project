@@ -7,7 +7,9 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import org.mockito.Mockito;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +18,6 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.sql.SQLException;
 import java.util.List;
 
 
@@ -83,5 +84,14 @@ class AdminServiceTest {
             int result = adminService.registerVisitHistory(visitHistory);
             // then 무결성 제약조건 예외 발생
         });
+    }
+
+    @Test
+    @DisplayName("방문 여부를 확인하는 테스트")
+    void isVisitPlaceTest () {
+        HttpServletRequest mockRequest = Mockito.mock(HttpServletRequest.class);
+        Mockito.when(mockRequest.getParameter("selectedDistrict")).thenReturn("110");
+        Mockito.when(mockRequest.getParameter("restaurantName")).thenReturn("호랑이도삭면");
+        assertTrue(adminService.isVisitPlace(mockRequest));
     }
 }

@@ -51,18 +51,32 @@ public class AdminController {
         return districts;
     }
 
+    // 음식점 처음 방문 기록 등록하기
     @PostMapping("admin/registerRestaurant")
     @ResponseBody
     public String registerRestaurant(MultipartHttpServletRequest mrequest) throws IOException {
         HttpSession session = mrequest.getSession();
         ServletContext context = session.getServletContext();
-        int result = adminService.registerRestaurant(mrequest);
+
+        // 음시점이 이미 등록되어 있는지 확인
+        boolean isVisitPlace = adminService.isVisitPlace(mrequest);
+        int result = 0;
+
+        if(isVisitPlace) {
+            result = -1;
+        }
+
+        // 음식점이 등록되어 있지 않은 경우 정상적으로 등록 과정 진행
+        if(!isVisitPlace) {
+            result = adminService.registerRestaurant(mrequest);
+        }
+        log.info("출력 result" + String.valueOf(result));
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("result", String.valueOf(result));
-        log.info("첫방문 등록 결과 : " + String.valueOf(result));
         return jsonObject.toString();
     }
 
+    // 음식점 방문 기록 추가하기
     @PostMapping("admin/registerVisitHistory")
     @ResponseBody
     public String registerVisitHistory(HttpServletRequest request) {

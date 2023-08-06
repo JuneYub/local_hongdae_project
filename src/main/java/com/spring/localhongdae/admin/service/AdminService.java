@@ -100,4 +100,15 @@ public class AdminService implements InterAdminService {
         List<Place> placeList = placeRepository.findByDistrictIdAndPlaceName(districtId, placeName);
         return placeList;
     }
+
+    // 음식점 이름과 지역 id를 활용해 이미 등록되어 있는지 조회
+    @Override
+    public Boolean isVisitPlace(HttpServletRequest request) {
+        int districtId = Integer.parseInt(request.getParameter("selectedDistrict"));
+        String placeName = request.getParameter("restaurantName");
+        List<Place> placeList = placeRepository.findByDistrictIdAndPlaceName(districtId, placeName);
+
+        if(placeList.isEmpty()) return false;
+        else return true;
+    }
 }

@@ -25,4 +25,7 @@ public interface InterAdminService {
 
     // 음식점 이름 입력시 자동으로 검색해주는 기능
     List<Place> findPlaceList(HttpServletRequest request);
+
+    // 음식점 이름과 지역 id를 활용해 이미 등록되어 있는지 조회
+    Boolean isVisitPlace(HttpServletRequest request);
 }

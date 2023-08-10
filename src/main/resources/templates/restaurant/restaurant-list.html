@@ -3,9 +3,41 @@
       layout:decorate="~{/layout/default_layout}">
 
 <th:block th:with="ctxPath=${#httpServletRequest.contextPath}"></th:block>
+<th:block layout:fragment="content">
+<script>
+
+    $(document).ready(function() {
+        $("select[name='selectedCity']").on("change", getDistrict);
+    });
+
+    function searchRestaurant() {
+    }
+
+    function getDistrict() {
+        var cityId = $(this).val();
+
+        $.ajax({
+            url:"getDistrictList",
+            type:"GET",
+            data: {
+                "cityId":cityId
+            },
+            dataType:"json",
+            success:function (data) {
+                $("select[name='selectedDistrict']").children('option:not(:first)').remove();
+                $.each(data, function (index, item) {
+                   $("select[name='selectedDistrict']").append('<option value="' + item.district_id +'">' + item.district_name + '</option>');
+                });
+            },
+            error: function (request, status, error) {
+                alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
+            }
+        });
+    }
+</script>
 
 <body>
-    <section class="contents" layout:fragment="content">
+    <section class="contents">
         <div class="list-wrap">
             <div id="map" style="width:100%;height:80vw;"></div>
             <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=26966ba6b4868e85a7fc9760936d8e28"></script>
@@ -21,21 +53,21 @@
             <form>
                 <div class="select-wrapper">
                     <div class="line-center">
-                        <select class="custom-select-addr">
+                        <select id="selectCity" class="custom-select-addr" name="selectedCity">
                             <option value="none">광역시/도</option>
-                            <option value="서울시">서울시</option>
+                            <option th:each="city : ${cities}" th:value="${city.getCity_id}" th:text="${city.getCity_name}"></option>
                         </select>
                     </div>
 
                     <div class="line-center">
-                        <select class="custom-select-addr">
+                        <select class="custom-select-addr" name="selectedDistrict">
                             <option value="none">시/군/구</option>
                             <option value="test">test</option>
                         </select>
                     </div>
                 </div>
                 <div class="line-center">
-                <button class="btn-search-place">검색</button>
+                    <button class="btn-search-place" onclick="searchRestaurant()">검색</button>
                 </div>
             </form>
 
@@ -60,7 +92,8 @@
         </div>
 
         </div>
-    </section>
+    </section>>
+</th:block>
 </body>
 
 </html>

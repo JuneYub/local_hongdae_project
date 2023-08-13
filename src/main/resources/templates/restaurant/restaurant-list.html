@@ -4,21 +4,35 @@
 
 <th:block th:with="ctxPath=${#httpServletRequest.contextPath}"></th:block>
 <th:block layout:fragment="content">
-<script>
-
+<script th:inline="javascript">
+    /*<![CDATA[*/
     $(document).ready(function() {
-        $("select[name='selectedCity']").on("change", getDistrict);
+        $("select[name='selectedCity']").on("change", getDistrict)
+        // 도시 id와 지역 id 예외처리
+        var CityId = /*[[${selectedCity}]]*/;
+        if(CityId != null && !isNaN(CityId)) {
+            $("select[name='selectedCity']").val(CityId);
+        }
+        else {
+            $("select[name='selectedCity']").val("none");
+        }
+
+        getDistrict();
+        var districtId = /*[[${selectedDistrict}]]*/;
+        if(districtId != null && !isNaN(districtId)) {
+            $("select[name='selectedDistrict']").val(districtId);
+        }
+        else {
+            $("select[name='selectedDistrict']").val("none");
+        }
+
     });
-
-    function searchRestaurant() {
-    }
-
     function getDistrict() {
-        var cityId = $(this).val();
-
+        var cityId = $("select[name='selectedCity']").val();
         $.ajax({
             url:"getDistrictList",
             type:"GET",
+            async:false,
             data: {
                 "cityId":cityId
             },
@@ -30,10 +44,11 @@
                 });
             },
             error: function (request, status, error) {
-                alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
+                //alert("code: "+request.status+"\n"+"message: "+request.responseText+"\n"+"error: "+error);
             }
         });
     }
+    /*]]>*/
 </script>
 
 <body>
@@ -62,7 +77,6 @@
                     <div class="line-center">
                         <select class="custom-select-addr" name="selectedDistrict">
                             <option value="none">시/군/구</option>
-                            <option value="test">test</option>
                         </select>
                     </div>
                 </div>
@@ -72,27 +86,45 @@
             </form>
 
             <div class="list-body-wrap">
-
-
-
-                <ul>
-                    <li>
+                <ul class="ul-body-wrap">
+                    <li th:each="place : ${placePage}">
                         <a th:href="@{{ctxPath}/restaurant/detail (ctxPath=${ctxPath})}" >
-                            <div class="item-card" style="background: url('../img/restaurant/1.jpg');
-                            background-size: cover; background-repeat: no-repeat; background-position: center;">
-                                <p>백연돌담솥밥</p>
+                            <div class="item-card"
+                            th:style="'background: url(\'../img/restaurant/'+${place.image_id}+'\');
+                            background-size: cover; background-repeat: no-repeat; background-position: center;'"
+                            >
+
+                                <p th:text="${place.place_name}"></p>
                                 <p>방문 횟수 : 3회</p>
                             </div>
                         </a>
                     </li>
-
                 </ul>
-
             </div>
-        </div>
+
+            <div class="pagebar-wrap" th:if="${placePage != null} ">
+                <!-- 맨처음 버튼 -->
+                <a th:href="@{/restaurant/list(selectedCity=${selectedCity}, selectedDistrict=${selectedDistrict}, page=1)}"><<</a>
+                <!-- 이전 버튼 -->
+                <a th:href="@{${placePage.first} ? '' : @{/restaurant/list(selectedCity=${selectedCity}, selectedDistrict=${selectedDistrict}, page=${placePage.number})}}">이전</a>
+
+                <!-- 페이지 바 -->
+                <span th:each="page: ${#numbers.sequence(startPage, endPage)}">
+                    <span th:if="${page == placePage.number + 1} " th:text="${page}" th:style="${'margin: 0 2vw; color: red'}"></span>
+                    <span th:unless="${page == placePage.number + 1}">
+                        <a th:href="@{/restaurant/list(selectedCity=${selectedCity}, selectedDistrict=${selectedDistrict}, page=${page})}" th:text="${page}"></a>
+                    </span>
+                </span>
+
+                <!-- 다음 버튼 -->
+                <a th:href="@{${placePage.last} ? '' : @{/restaurant/list(selectedCity=${selectedCity}, selectedDistrict=${selectedDistrict}, page=${placePage.number+2})}}">다음</a>
+
+                <!-- 맨마지막 페이지 버튼 -->
+                <a th:href="@{/restaurant/list(selectedCity=${selectedCity}, selectedDistrict=${selectedDistrict}, page=${placePage.totalPages})}">>></a>
+            </div>
 
         </div>
-    </section>>
+    </section>`
 </th:block>
 </body>
 

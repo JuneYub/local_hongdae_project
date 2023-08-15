@@ -50,6 +50,7 @@ public class RestaurantService implements InterRestaurant{
         Page<Place> placePage = null;
         try {
             int page = pageable.getPageNumber();
+            log.info(String.valueOf(page));
             // page 번호 예외처리 (음수인 경우)
             if(page <= 0) {
                 return null;

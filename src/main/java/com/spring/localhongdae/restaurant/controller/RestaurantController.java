@@ -1,5 +1,6 @@
 package com.spring.localhongdae.restaurant.controller;
 
+import com.spring.localhongdae.dto.DistrictDto;
 import com.spring.localhongdae.entity.City;
 import com.spring.localhongdae.entity.District;
 import com.spring.localhongdae.entity.Place;
@@ -39,7 +40,18 @@ public class RestaurantController {
             model.addObject("endPage", endPage);
         }
 
+        // 지역 정보 조회
+        DistrictDto district = null;
+        if(request.getParameter("selectedDistrict") != null || !"".equals(request.getParameter("selectedDistrict"))) {
+             district = restaurantService.getDistrictInfoByDistrictId(Integer.parseInt(request.getParameter("selectedDistrict")));
+        }
+        else {
+            // 서울시청 위도경도
+            district.setLatitude(37.56618444304983);
+            district.setLongitude(126.97836380791748);
+        }
 
+        model.addObject("district", district);
         model.addObject("selectedCity",request.getParameter("selectedCity"));
         model.addObject("selectedDistrict",request.getParameter("selectedDistrict"));
         model.addObject("cities", cities);

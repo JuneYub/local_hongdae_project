@@ -10,4 +10,7 @@ import java.util.List;
 public interface DistrictsRepository extends JpaRepository<District, Integer> {
     @Query("select di from districts di where di.fk_city_id = :city_id")
     List<District> findAllByCity_id(@Param("city_id") int city_id);
+
+    @Query("select di from districts  di where di.district_id = :district_id")
+    District findByDistricId(@Param("district_id") int districtId);
 }

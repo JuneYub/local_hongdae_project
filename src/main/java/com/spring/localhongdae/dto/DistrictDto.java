@@ -1,13 +1,13 @@
-package com.spring.localhongdae.entity;
+package com.spring.localhongdae.dto;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.Setter;
 
 @Getter
-@Entity(name = "districts")
-public class District {
-    @Id
+@Setter
+public class DistrictDto {
+
     private int district_id;
 
     private String district_name;
@@ -17,4 +17,5 @@ public class District {
     private Double latitude;
 
     private Double longitude;
+
 }

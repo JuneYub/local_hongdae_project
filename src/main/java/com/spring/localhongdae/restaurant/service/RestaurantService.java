@@ -6,17 +6,16 @@ import com.spring.localhongdae.admin.model.PlaceRepository;
 import com.spring.localhongdae.entity.City;
 import com.spring.localhongdae.entity.District;
 import com.spring.localhongdae.entity.Place;
+import com.spring.localhongdae.dto.DistrictDto;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
-import org.json.JSONObject;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
 import java.util.List;
 
@@ -72,5 +71,11 @@ public class RestaurantService implements InterRestaurant{
             return null;
         }
 
+    }
+
+    @Override
+    public DistrictDto getDistrictInfoByDistrictId(int districtId) {
+        ModelMapper modelMapper = new ModelMapper();
+        return modelMapper.map(districtsRepository.findByDistricId(districtId), DistrictDto.class);
     }
 }

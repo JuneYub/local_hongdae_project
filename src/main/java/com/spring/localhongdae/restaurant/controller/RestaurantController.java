@@ -41,8 +41,8 @@ public class RestaurantController {
         }
 
         // 지역 정보 조회
-        DistrictDto district = null;
-        if(request.getParameter("selectedDistrict") != null || !"".equals(request.getParameter("selectedDistrict"))) {
+        DistrictDto district = new DistrictDto();
+        if(request.getParameter("selectedDistrict") != null && !"".equals(request.getParameter("selectedDistrict"))) {
              district = restaurantService.getDistrictInfoByDistrictId(Integer.parseInt(request.getParameter("selectedDistrict")));
         }
         else {

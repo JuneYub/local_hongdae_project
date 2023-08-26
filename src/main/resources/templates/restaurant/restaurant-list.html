@@ -69,6 +69,8 @@
                 };
 
                 var map = new kakao.maps.Map(container, options);
+                var selectedMarker = null; // 마우스를 클릭하면 인포윈도우가 뜰 마커
+                var overinfoWindow = null;
 
                 var positions = [];
                 // 마커가 표시될 위치입니다
@@ -82,12 +84,10 @@
                     latitude : latitude,
                     longitude : longitude
                 };
-
-                console.log(latitude, longitude);
                 positions.push(position);
                 var place[[${stat.count}]] = [[${place}]];
                 [/]
-                console.log(positions);
+
 
                 for (var i = 0; i < positions.length; i ++) {
                     // 마커를 생성합니다
@@ -104,15 +104,22 @@
                     // 마커에 mouseover 이벤트와 mouseout 이벤트를 등록합니다
                     // 이벤트 리스너로는 클로저를 만들어 등록합니다
                     // for문에서 클로저를 만들어 주지 않으면 마지막 마커에만 이벤트가 등록됩니다
-                    kakao.maps.event.addListener(marker, 'mouseover', makeOverListener(map, marker, infowindow));
-                    kakao.maps.event.addListener(marker, 'mouseout', makeOutListener(infowindow));
+                    kakao.maps.event.addListener(marker, 'click', makeOverListener(map, marker, infowindow));
+                    //kakao.maps.event.addListener(marker, 'mouseout', makeOutListener(infowindow));
                 };
 
                 // 인포윈도우를 표시하는 클로저를 만드는 함수입니다
                 function makeOverListener(map, marker, infowindow) {
-                    return function() {
-                        infowindow.open(map, marker);
-                    };
+                    if(selectedMarker !== marker) {
+                        return function () {
+                            if(overinfoWindow !== null) {
+                                overinfoWindow.close();
+                            }
+                            overinfoWindow = infowindow;
+                            overinfoWindow.open(map, marker);
+                            selectedMarker = marker;
+                        };
+                    }
                 }
 
                 // 인포윈도우를 닫는 클로저를 만드는 함수입니다

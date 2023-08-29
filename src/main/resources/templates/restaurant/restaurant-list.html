@@ -65,7 +65,7 @@
                 var container = document.getElementById('map');
                 var options = {
                     center: new kakao.maps.LatLng(latitude, longitude),
-                    level: 3
+                    level: 5
                 };
 
                 var map = new kakao.maps.Map(container, options);
@@ -167,14 +167,14 @@
                 </ul>
             </div>
 
-            <div class="pagebar-wrap" th:if="${placePage != null} ">
+            <div class="pagebar-wrap" th:if="${placePage != null and startPage != null} ">
                 <!-- 맨처음 버튼 -->
                 <a th:href="@{/restaurant/list(selectedCity=${selectedCity}, selectedDistrict=${selectedDistrict}, page=1)}"><<</a>
                 <!-- 이전 버튼 -->
                 <a th:href="@{${placePage.first} ? '' : @{/restaurant/list(selectedCity=${selectedCity}, selectedDistrict=${selectedDistrict}, page=${placePage.number})}}">이전</a>
 
                 <!-- 페이지 바 -->
-                <span th:each="page: ${#numbers.sequence(startPage, endPage)}">
+                <span th:if="${startPage != null}" th:each="page: ${#numbers.sequence(startPage, endPage)}">
                     <span th:if="${page == placePage.number + 1} " th:text="${page}" th:style="${'margin: 0 2vw; color: red'}"></span>
                     <span th:unless="${page == placePage.number + 1}">
                         <a th:href="@{/restaurant/list(selectedCity=${selectedCity}, selectedDistrict=${selectedDistrict}, page=${page})}" th:text="${page}"></a>
@@ -186,6 +186,10 @@
 
                 <!-- 맨마지막 페이지 버튼 -->
                 <a th:href="@{/restaurant/list(selectedCity=${selectedCity}, selectedDistrict=${selectedDistrict}, page=${placePage.totalPages})}">>></a>
+            </div>
+
+            <div class="info-center" th:if="${startPage == null}">
+                조회할 항목이 없습니다.
             </div>
 
         </div>

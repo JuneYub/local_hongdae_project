@@ -275,4 +275,8 @@ a {
         margin: 0 2vw;
     }
 
+    .info-center {
+        text-align: center;
+    }
+
 }

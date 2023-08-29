@@ -31,7 +31,7 @@ public class RestaurantController {
         List<City> cities = restaurantService.getCities();
         Page<Place> placePage = restaurantService.getPageByDistrictId(request, pageable);
 
-        if(placePage != null) {
+        if(placePage != null && placePage.getTotalElements() != 0) {
             // 페이지 바 만들기
             int blockSize = 5;
             int startPage = (((int) Math.ceil(((double) pageable.getPageNumber() / blockSize))) - 1) * blockSize + 1;

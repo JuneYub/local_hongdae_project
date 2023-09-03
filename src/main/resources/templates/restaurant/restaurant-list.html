@@ -153,7 +153,7 @@
             <div class="list-body-wrap">
                 <ul class="ul-body-wrap">
                     <li th:each="place : ${placePage}">
-                        <a th:href="@{{ctxPath}/restaurant/detail (ctxPath=${ctxPath})}" >
+                        <a th:href="@{{ctxPath}/restaurant/detail?placeId={place_id} (ctxPath=${ctxPath}, place_id=${place.place_id})}" >
                             <div class="item-card"
                             th:style="'background: url(\'../img/restaurant/'+${place.image_id}+'\');
                             background-size: cover; background-repeat: no-repeat; background-position: center;'"

@@ -16,7 +16,7 @@
 <section class="contents">
     <div class="detail-contents-wrap">
         <div class="place-head">
-                <div class="place-name">restaurant name</div>
+                <div class="place-name" th:text="${placeDto.place_name}"></div>
                 <span class="material-symbols-outlined">share</span>
                 <span class="material-symbols-outlined">favorite</span>
             <div class="placae-time">open : 11:00 ~ 24:00 </div>
@@ -25,7 +25,7 @@
 
         <div class="place-body">
             <div class="place-img">
-                <img src="/img/restaurant/1.jpg" />
+                <img th:src="@{/img/restaurant/}+${placeDto.image_id}"/>
             </div>
 
             <div class="place-detail-cont">

@@ -3,6 +3,7 @@ package com.spring.localhongdae.restaurant.service;
 import com.spring.localhongdae.admin.model.CityRepository;
 import com.spring.localhongdae.admin.model.DistrictsRepository;
 import com.spring.localhongdae.admin.model.PlaceRepository;
+import com.spring.localhongdae.dto.PlaceDto;
 import com.spring.localhongdae.entity.City;
 import com.spring.localhongdae.entity.District;
 import com.spring.localhongdae.entity.Place;
@@ -77,5 +78,12 @@ public class RestaurantService implements InterRestaurant{
     public DistrictDto getDistrictInfoByDistrictId(int districtId) {
         ModelMapper modelMapper = new ModelMapper();
         return modelMapper.map(districtsRepository.findByDistricId(districtId), DistrictDto.class);
+    }
+
+    @Override
+    public PlaceDto getPlaceById(int placeId) {
+        ModelMapper modelMapper = new ModelMapper();
+        Place place = placeRepository.findByPlaceId(placeId);
+        return modelMapper.map(place, PlaceDto.class);
     }
 }

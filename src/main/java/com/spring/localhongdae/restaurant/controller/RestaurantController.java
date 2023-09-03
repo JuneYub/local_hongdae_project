@@ -1,11 +1,13 @@
 package com.spring.localhongdae.restaurant.controller;
 
 import com.spring.localhongdae.dto.DistrictDto;
+import com.spring.localhongdae.dto.PlaceDto;
 import com.spring.localhongdae.entity.City;
 import com.spring.localhongdae.entity.District;
 import com.spring.localhongdae.entity.Place;
 import com.spring.localhongdae.restaurant.service.RestaurantService;
 import jakarta.servlet.http.HttpServletRequest;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -19,6 +21,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
 
+@Slf4j
 @Controller
 public class RestaurantController {
 
@@ -62,9 +65,11 @@ public class RestaurantController {
     }
 
     @GetMapping("/restaurant/detail")
-    public ModelAndView getResturantDetail() {
+    public ModelAndView getResturantDetail(@RequestParam(value = "placeId") int placeId) {
         ModelAndView model = new ModelAndView();
+        PlaceDto placeDto = restaurantService.getPlaceById(placeId);
         model.setViewName("restaurant/restaurant-detail");
+        model.addObject("placeDto", placeDto);
         return model;
     }
 

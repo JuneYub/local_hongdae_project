@@ -1,5 +1,6 @@
 package com.spring.localhongdae.restaurant.service;
 
+import com.spring.localhongdae.dto.PlaceDto;
 import com.spring.localhongdae.entity.City;
 import com.spring.localhongdae.entity.District;
 import com.spring.localhongdae.entity.Place;
@@ -22,4 +23,7 @@ public interface InterRestaurant {
     
     // 지역 이름으로 지역 정보 조회
     DistrictDto getDistrictInfoByDistrictId(int districtId);
+
+    // 음식점 id로 음식점 정보 조회
+    PlaceDto getPlaceById(int placeId);
 }

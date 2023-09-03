@@ -12,7 +12,7 @@ public class Place {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    int place_id;
+    private int place_id;
 
     private int fk_district_id;
     private String place_name;

@@ -16,4 +16,7 @@ public interface PlaceRepository extends JpaRepository<Place, Integer> {
 
     @Query(value = "SELECT p FROM places p where p.fk_district_id =:districtId")
     Page<Place> findByDistrictId(PageRequest pageRequest, @Param("districtId")int districtId);
+
+    @Query(value = "SELECT * FROM places p where p.place_id =:placeId", nativeQuery = true)
+    Place findByPlaceId(@Param("placeId") int placeId);
 }

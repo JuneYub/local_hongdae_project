@@ -26,7 +26,7 @@ import java.util.List;
 @SpringBootTest
 class AdminServiceTest {
     @Autowired
-    private AdminService adminService;
+    private AdminServiceImpl adminService;
 
     private MockMvc mockMvc;
     private static final Logger logger = LoggerFactory.getLogger(AdminServiceTest.class);

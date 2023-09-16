@@ -1,6 +1,6 @@
 package com.spring.localhongdae.admin.controller;
 
-import com.spring.localhongdae.admin.service.AdminService;
+import com.spring.localhongdae.admin.service.AdminServiceImpl;
 import com.spring.localhongdae.entity.City;
 import com.spring.localhongdae.entity.District;
 import com.spring.localhongdae.entity.Place;
@@ -25,7 +25,7 @@ import java.util.List;
 public class AdminController {
 
     @Autowired
-    private AdminService adminService;
+    private AdminServiceImpl adminService;
 
     @GetMapping("admin/login")
     public ModelAndView getAdminLogin() {

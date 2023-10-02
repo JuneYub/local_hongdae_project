@@ -1,4 +1,4 @@
-package com.spring.localhongdae.restaurant.service;
+package com.spring.localhongdae.place.service;
 
 import com.spring.localhongdae.dto.PlaceDto;
 import com.spring.localhongdae.entity.City;
@@ -11,7 +11,7 @@ import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 
-public interface RestaurantService {
+public interface PlaceService {
     // 도시 목록을 조회
     List<City> getCities();
 
@@ -19,7 +19,7 @@ public interface RestaurantService {
     List<District> getDistricts(int cityId);
 
     // 음식점 페이지 조회
-    Page<Place> getPageByDistrictId(HttpServletRequest request, Pageable pageable);
+    Page<PlaceDto> getPageByDistrictId(HttpServletRequest request, Pageable pageable);
     
     // 지역 이름으로 지역 정보 조회
     DistrictDto getDistrictInfoByDistrictId(int districtId);

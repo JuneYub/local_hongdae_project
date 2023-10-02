@@ -1,4 +1,4 @@
-package com.spring.localhongdae.restaurant.service;
+package com.spring.localhongdae.place.service;
 
 import com.spring.localhongdae.admin.model.CityRepository;
 import com.spring.localhongdae.admin.model.DistrictsRepository;
@@ -22,7 +22,7 @@ import java.util.List;
 
 @Slf4j
 @Service
-public class RestaurantServiceImpl implements RestaurantService {
+public class PlaceServiceImpl implements PlaceService {
 
     @Autowired
     CityRepository cityRepository;
@@ -46,8 +46,8 @@ public class RestaurantServiceImpl implements RestaurantService {
     }
 
     @Override
-    public Page<Place> getPageByDistrictId(HttpServletRequest request, Pageable pageable) {
-        Page<Place> placePage = null;
+    public Page<PlaceDto> getPageByDistrictId(HttpServletRequest request, Pageable pageable) {
+        Page<PlaceDto> placePage = null;
         try {
             int page = pageable.getPageNumber();
             log.info(String.valueOf(page));
@@ -74,12 +74,14 @@ public class RestaurantServiceImpl implements RestaurantService {
 
     }
 
+    // 지역 아이디로 지역 정보 가져오기
     @Override
     public DistrictDto getDistrictInfoByDistrictId(int districtId) {
         ModelMapper modelMapper = new ModelMapper();
         return modelMapper.map(districtsRepository.findByDistricId(districtId), DistrictDto.class);
     }
 
+    // 음식점 아이디로 음식점 정보 가져오기
     @Override
     public PlaceDto getPlaceById(int placeId) {
         ModelMapper modelMapper = new ModelMapper();

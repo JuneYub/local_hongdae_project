@@ -1,11 +1,11 @@
-package com.spring.localhongdae.restaurant.controller;
+package com.spring.localhongdae.place.controller;
 
 import com.spring.localhongdae.dto.DistrictDto;
 import com.spring.localhongdae.dto.PlaceDto;
 import com.spring.localhongdae.entity.City;
 import com.spring.localhongdae.entity.District;
 import com.spring.localhongdae.entity.Place;
-import com.spring.localhongdae.restaurant.service.RestaurantServiceImpl;
+import com.spring.localhongdae.place.service.PlaceServiceImpl;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,16 +22,16 @@ import java.util.List;
 
 @Slf4j
 @Controller
-public class RestaurantController {
+public class PlaceController {
 
     @Autowired
-    RestaurantServiceImpl restaurantService;
+    PlaceServiceImpl restaurantService;
 
     @GetMapping("/restaurant/list")
     public ModelAndView getResturantList(HttpServletRequest request, @PageableDefault(page = 1, size = 5)Pageable pageable) {
         ModelAndView model = new ModelAndView();
         List<City> cities = restaurantService.getCities();
-        Page<Place> placePage = restaurantService.getPageByDistrictId(request, pageable);
+        Page<PlaceDto> placePage = restaurantService.getPageByDistrictId(request, pageable);
 
         if(placePage != null && placePage.getTotalElements() != 0) {
             // 페이지 바 만들기

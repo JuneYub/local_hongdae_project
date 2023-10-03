@@ -14,9 +14,9 @@ public class PlaceDto {
     private Double latitude;
     private Double longitude;
     private String image_id;
-    private int visit_count;
+    private long visit_count;
 
-    public PlaceDto(int place_id, int fk_district_id, String place_name, Double latitude, Double longitude, String image_id, int visit_count) {
+    public PlaceDto(int place_id, int fk_district_id, String place_name, Double latitude, Double longitude, String image_id, long visit_count) {
         this.place_id = place_id;
         this.fk_district_id = fk_district_id;
         this.place_name = place_name;

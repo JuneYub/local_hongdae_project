@@ -160,7 +160,7 @@
                             >
 
                                 <p th:text="${place.place_name}"></p>
-                                <p>방문 횟수 : 3회</p>
+                                <p th:text="'방문 횟수 : ' + ${place.visit_count} + '회'"></p>
                             </div>
                         </a>
                     </li>

@@ -32,6 +32,9 @@ dependencies {
     // 객체 매핑 라이브러리
     implementation 'org.modelmapper:modelmapper:2.4.2'
 
+    //log4j2
+    implementation 'org.bgee.log4jdbc-log4j2:log4jdbc-log4j2-jdbc4.1:1.16'
+
 
     runtimeOnly 'com.mysql:mysql-connector-j'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'

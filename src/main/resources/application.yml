@@ -10,10 +10,10 @@ spring:
         # sql문 정렬하여 출력
         format_sql: true
   datasource:
-    url: jdbc:mysql://localhost:3306/gongibap
+    url: jdbc:log4jdbc:mysql://localhost:3306/gongibap
     username: root
     password: 1234
-    driver-class-name: com.mysql.cj.jdbc.Driver
+    driver-class-name: net.sf.log4jdbc.sql.jdbcapi.DriverSpy
   devtools:
     restart:
       enabled: true
@@ -34,11 +34,7 @@ spring:
   # 바인딩되는 파라미터 값 출력
   logging:
     level:
-      org:
-        hibernate:
-          type:
-            descriptor:
-              sql: trace
+      org.hibernate.type.descriptor.sql.BasicBinder: TRACE
 
 
 
